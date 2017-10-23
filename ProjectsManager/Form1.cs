@@ -1310,7 +1310,7 @@ namespace ProjectsManager
                         }
                         //DataTable dt2 = mainInterface.Select("SELECT vat FROM vat WHERE date<='" + MyUtills.dateToSQL(currentBill.BillDate) + "' ORDER BY date DESC").Tables[0];
                         //textBoxBillVat.Text = "% " + dt2.Rows[0][0].ToString();
-
+                        
                         DataTable dt2 = mainInterface.Select("SELECT vat,date FROM vat ORDER BY date DESC").Tables[0];
                         foreach (DataRow dro in dt2.Rows)
                         {
@@ -1318,8 +1318,8 @@ namespace ProjectsManager
                             if (MyUtills.dateFromSQL(dro[1].ToString()) <= currentBill.VatDate)
                                 break;
                         }
-                        if (currentBill.IsClosed == 0 && currentBill.InvoiceNumber == string.Empty)
-                            textBoxBillVat.Text = "%" + dt2.Rows[0][0].ToString();
+                        //if (currentBill.IsClosed == 0 && currentBill.InvoiceNumber == string.Empty)
+                            //textBoxBillVat.Text = "%" + dt2.Rows[0][0].ToString();
 
                         //textBoxBillVat.Text = "% " + dt2.Rows[0][0].ToString();
 

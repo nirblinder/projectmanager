@@ -171,8 +171,8 @@ namespace ProjectsManager
                 if (MyUtills.dateFromSQL(dro[1].ToString()) <= bill.VatDate)
                     break;
             }
-            if (bill.IsClosed == 0 && bill.InvoiceNumber == string.Empty)
-                bill.Vat = Convert.ToDouble(dt2.Rows[0][0]);
+            //if (bill.IsClosed == 0 && bill.InvoiceNumber == string.Empty)
+                //bill.Vat = Convert.ToDouble(dt2.Rows[0][0]);
 
             project.ContractNumber = dt.Rows[0][18].ToString();
             bill.BillPart = Convert.ToInt16(dt.Rows[0][19]);
