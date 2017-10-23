@@ -67,7 +67,8 @@ namespace ProjectsManager
                                     "projects.toSubmit, " +
                                     "billsPaid.billSum, " +
                                     "bills_projects.percent, " +
-                                    "bills_projects.progress " +
+                                    "bills_projects.progress, " +
+                                    "bills.id " +
                                     "FROM bills " +
                                 "LEFT JOIN bills_projects ON bills.id=bills_projects.idBill " +
                                 "LEFT JOIN projects ON bills_projects.idProject=projects.idProjects " +
@@ -111,6 +112,27 @@ namespace ProjectsManager
             bill.Amount = Convert.ToDouble(dt.Rows[0][13]);
             if (dt.Rows[0][14].ToString() != String.Empty)
                 bill.CurrentIndex = Convert.ToDouble(dt.Rows[0][14]);
+
+
+            int selectedId = int.Parse(dt.Rows[0][32].ToString());
+            string query11 = "SELECT projects.idProjects," +
+                                           "projects.projectNumber," +
+                                           "projects.amount," +
+                                           "projects.amount " +
+                                           "FROM projects INNER JOIN bills_projects ON projects.idProjects=bills_projects.idProject WHERE bills_projects.idBill='" + selectedId.ToString() + "'";
+
+            DataTable dtProjectNumber = localInterface.Select(query11).Tables[0];
+            double billTotal = 0, billPaid = 0;
+            foreach (DataRow dr in dtProjectNumber.Rows)
+            {
+                billTotal += projectPartAmount((int)dr[0], selectedId);
+                billPaid += projectPartPaid((int)dr[0], selectedId);
+            }
+
+            bill.Amount = billTotal;
+
+
+
             string totalPaidAmount = " ", totalPaidText = " ", totalPaidNIS = " ";
             foreach (DataRow row in dt.Rows)
             {
@@ -193,6 +215,8 @@ namespace ProjectsManager
                     openSumNIS = " ";
                 }
             }
+
+            
 
 
 
@@ -394,7 +418,9 @@ namespace ProjectsManager
                                     "bills.invoiceNumber, " +
                                     "bills_projects.percent, " +
                                     "bills_projects.progress, " +
-                                    "bills.amount " +
+                                    "bills.amount, " +
+                                    "bills.id, " +
+                                    "projects.idProjects " +
                                 "FROM bills " + 
                                 "INNER JOIN bills_projects ON bills.id=bills_projects.idBill " +
                                 "INNER JOIN projects ON bills_projects.idProject=projects.idProjects " + 
@@ -437,7 +463,7 @@ namespace ProjectsManager
 
                     if (oWordDoc.Tables[1].Cell(i, 4).Range.Text != String.Empty)
                     {
-                        amount = (double)dtBills.Rows[i - 2][7];
+                        amount = projectPartPaid((int)dtBills.Rows[i - 2][9], (int)dtBills.Rows[i - 2][8]);
                         oWordDoc.Tables[1].Cell(i, 8).Range.Text = String.Format("{0:#,0.00}", amount); sumBills += amount;
                     }
                     else
@@ -1109,6 +1135,16 @@ namespace ProjectsManager
         private void Form_Export_FormClosed(object sender, FormClosedEventArgs e)
         {
 
+        }
+        private double projectPartAmount(int idProject, int idBill)
+        {
+            DataTable dt = localInterface.Select("SELECT bills_projects.percent,projects.amount FROM bills_projects INNER JOIN projects ON bills_projects.idProject=projects.idProjects WHERE bills_projects.idProject='" + idProject.ToString() + "' AND bills_projects.idBill='" + idBill.ToString() + "'").Tables[0];
+            return (double)dt.Rows[0][0] / 100 * (double)dt.Rows[0][1];
+        }
+        private double projectPartPaid(int idProject, int idBill)
+        {
+            DataTable dt = localInterface.Select("SELECT bills_projects.paid,projects.amount FROM bills_projects INNER JOIN projects ON bills_projects.idProject=projects.idProjects WHERE bills_projects.idProject='" + idProject.ToString() + "' AND bills_projects.idBill='" + idBill.ToString() + "'").Tables[0];
+            return (double)dt.Rows[0][0] / 100 * (double)dt.Rows[0][1];
         }
     }
 }

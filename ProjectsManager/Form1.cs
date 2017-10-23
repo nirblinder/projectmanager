@@ -1153,8 +1153,14 @@ namespace ProjectsManager
                         selectedId = dt.Rows[0][21].ToString();
 
                         //refreshDataGridViewBillsDetailsProjects(int.Parse(selectedId));
+
+
                         
-                        string query = "SELECT projects.idProjects,projects.projectNumber,projects.amount,projects.amount FROM projects INNER JOIN bills_projects ON projects.idProjects=bills_projects.idProject WHERE bills_projects.idBill='" + selectedId + "'";
+                        string query = "SELECT projects.idProjects," +
+                                           "projects.projectNumber," +
+                                           "projects.amount," + 
+                                           "projects.amount "+ 
+                                           "FROM projects INNER JOIN bills_projects ON projects.idProjects=bills_projects.idProject WHERE bills_projects.idBill='" + selectedId + "'";
 
                         DataTable dtProjectNumber = mainInterface.Select(query).Tables[0];
                         textBoxDetailsBillProjectName.Text = "";
