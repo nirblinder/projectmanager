@@ -3502,7 +3502,8 @@ namespace ProjectsManager
                         {
                             dtFinance.Rows[dtFinance.Rows.Count - 1][1] = dtIncomesDefinite.Rows[indexDefinite][0];
                             dtFinance.Rows[dtFinance.Rows.Count - 1][2] = dtIncomesDefinite.Rows[indexDefinite][5];
-                            dtFinance.Rows[dtFinance.Rows.Count - 1][3] = ((double)dtIncomesDefinite.Rows[indexDefinite][2] * (double)dtIncomesDefinite.Rows[indexDefinite][6] + (double)dtIncomesDefinite.Rows[indexDefinite][7]) * (1 + vat / 100);
+                            //dtFinance.Rows[dtFinance.Rows.Count - 1][3] = ((double)dtIncomesDefinite.Rows[indexDefinite][2] * (double)dtIncomesDefinite.Rows[indexDefinite][6] + (double)dtIncomesDefinite.Rows[indexDefinite][7]) * (1 + vat / 100);
+                            dtFinance.Rows[dtFinance.Rows.Count - 1][3] = ((double)dtIncomesDefinite.Rows[indexDefinite][6] == 1) ? ((double)dtIncomesDefinite.Rows[indexDefinite][2] + (double)dtIncomesDefinite.Rows[indexDefinite][7]) * (1 + vat / 100) : (double)dtIncomesDefinite.Rows[indexDefinite][2] + (double)dtIncomesDefinite.Rows[indexDefinite][7];
                             dtFinance.Rows[dtFinance.Rows.Count - 1][4] = dtIncomesDefinite.Rows[indexDefinite][4];
                             dtFinance.Rows[dtFinance.Rows.Count - 1][5] = dtIncomesDefinite.Rows[indexDefinite][3];
                             indexDefinite++;
@@ -3515,7 +3516,8 @@ namespace ProjectsManager
                         {
                             dtFinance.Rows[dtFinance.Rows.Count - 1][6] = dtIncomesForecast.Rows[indexForecast][0];
                             dtFinance.Rows[dtFinance.Rows.Count - 1][7] = dtIncomesForecast.Rows[indexForecast][5];
-                            dtFinance.Rows[dtFinance.Rows.Count - 1][8] = ((double)dtIncomesForecast.Rows[indexForecast][2] * (double)dtIncomesForecast.Rows[indexForecast][6] + (double)dtIncomesForecast.Rows[indexForecast][7]) * (1 + vat / 100);
+                            //dtFinance.Rows[dtFinance.Rows.Count - 1][8] = ((double)dtIncomesForecast.Rows[indexForecast][2] + (double)dtIncomesForecast.Rows[indexForecast][7]) * (1 + vat / 100);
+                            dtFinance.Rows[dtFinance.Rows.Count - 1][8] = ((double)dtIncomesForecast.Rows[indexForecast][6] == 1) ? ((double)dtIncomesForecast.Rows[indexForecast][2] + (double)dtIncomesForecast.Rows[indexForecast][7]) * (1 + vat / 100) : (double)dtIncomesForecast.Rows[indexForecast][2] + (double)dtIncomesForecast.Rows[indexForecast][7];
                             dtFinance.Rows[dtFinance.Rows.Count - 1][9] = dtIncomesForecast.Rows[indexForecast][4];
                             dtFinance.Rows[dtFinance.Rows.Count - 1][10] = dtIncomesForecast.Rows[indexForecast][3];
                             indexForecast++;
